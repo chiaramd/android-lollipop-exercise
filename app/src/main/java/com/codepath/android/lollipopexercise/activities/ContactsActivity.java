@@ -1,11 +1,14 @@
 package com.codepath.android.lollipopexercise.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.codepath.android.lollipopexercise.R;
 import com.codepath.android.lollipopexercise.adapters.ContactsAdapter;
@@ -54,13 +57,44 @@ public class ContactsActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
-        return super.onOptionsItemSelected(item);
+    View.OnClickListener myOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //code to remove item 0 from rv
+            contacts.remove(0);
+            mAdapter.notifyItemRemoved(0);
+            //mAdapter.notifyItemRangeChanged(0,contacts.size());
+        }
+    };
+
+    //our code
+    public void onAddContact(MenuItem miAdd) {
+        Contact newContact = Contact.getRandomContact(this);
+        String name = newContact.getName();
+        contacts.add(newContact);
+        mAdapter.notifyItemInserted(0);
+        rvContacts.scrollToPosition(0);
+        Snackbar.make(rvContacts, String.format("%s added to Contacts", name), Snackbar.LENGTH_LONG)
+                .setAction("UNDO", myOnClickListener)
+                .setActionTextColor(ContextCompat.getColor(ContactsActivity.this, R.color.accent))
+                .show();
+
+        //display snackbar for fixed time
+        //option to UNDO acition
+        //need to pass in a container view to snackbar i.e. ref to recyclerview
+
+
     }
+
+
 }

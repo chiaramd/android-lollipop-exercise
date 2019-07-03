@@ -32,4 +32,5 @@ dependencies {
     implementation "com.android.support:palette-v7:${supportLibVersion}"
     implementation "com.android.support:percent:${supportLibVersion}"
 
+
 }
